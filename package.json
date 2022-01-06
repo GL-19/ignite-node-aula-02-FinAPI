@@ -1,5 +1,5 @@
 {
-	"name": "02-primeiro-projeto-node",
+	"name": "02-finapi",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -14,6 +14,7 @@
 		"nodemon": "^2.0.15"
 	},
 	"dependencies": {
-		"express": "^4.17.2"
+		"express": "^4.17.2",
+		"uuid": "^8.3.2"
 	}
 }
