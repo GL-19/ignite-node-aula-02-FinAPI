@@ -59,6 +59,20 @@ app.get("/statement", verifyIfAccountExistsByCPF, (request, response) => {
 	return response.json(customer.statement);
 });
 
+app.get("/statement/date", verifyIfAccountExistsByCPF, (request, response) => {
+	const { customer } = request;
+	const { date } = request.query;
+
+	const dateFormat = new Date(date + " 00:00");
+
+	const statement = customer.statement.filter(
+		(statement) =>
+			statement.created_at.toDateString() === new Date(dateFormat).toDateString()
+	);
+
+	return response.json(statement);
+});
+
 app.post("/deposit", verifyIfAccountExistsByCPF, (request, response) => {
 	const { description, amount } = request.body;
 
@@ -97,4 +111,33 @@ app.post("/withdraw", verifyIfAccountExistsByCPF, (request, response) => {
 	return response.status(201).send();
 });
 
+app.get("/account", verifyIfAccountExistsByCPF, (request, response) => {
+	const { customer } = request;
+
+	return response.json(customer);
+});
+
+app.put("/account", verifyIfAccountExistsByCPF, (request, response) => {
+	const { name } = request.body;
+	const { customer } = request;
+
+	customer.name = name;
+
+	return response.status(201).send();
+});
+
+app.delete("/account", verifyIfAccountExistsByCPF, (request, response) => {
+	const { customer } = request;
+
+	customers.splice(customer, 1);
+
+	return response.status(200).json(customers);
+});
+
+app.get("/balance", verifyIfAccountExistsByCPF, (request, response) => {
+	const { customer } = request;
+	const balance = getBalance(customer.statement);
+
+	return response.json(balance);
+});
 app.listen(3333, () => console.log("Servidor rodando na porta 3333"));
